@@ -62,10 +62,27 @@ class ImageFile{
         //$img = imagescale($im, 150);
 		$source_imagex = imagesx($source_image);
 		$source_imagey = imagesy($source_image);
+		$k = $source_imagex/$source_imagey;
+		if ($k < 4/3)
+		{
+			$dest_imagey = 240;
+			$dest_imagex = $dest_imagey * $k;
+		}
+		elseif($k > 4/3)
+		{
+			$dest_imagex = 320;
+			$dest_imagey = $dest_imagex / $k;
+		}
+		else
+		{
+			$dest_imagey = 240;
+			$dest_imagex = 320;
+		}
+		
 
-		$dest_image = imagecreatetruecolor(320, 240);
+		$dest_image = imagecreatetruecolor($dest_imagex, $dest_imagey);
 		imagecopyresampled($dest_image, $source_image, 0, 0, 0, 0, 
-					320, 240, $source_imagex, $source_imagey);
+					$dest_imagex, $dest_imagey, $source_imagex, $source_imagey);
         return $dest_image;
 	}
 
